@@ -1,5 +1,6 @@
 import glob
 import os
+
 from .song import Song
 
 
@@ -12,7 +13,9 @@ class BaseFinder(object):
 class GlobFinder(object):
     def search(self, phrase):
         path = os.path.realpath(os.path.expanduser(phrase))
-        return map(Song.local, glob.glob(path))
+
+        return map(Song.local, filter(
+            os.path.isfile, glob.iglob('%s*' % path)))
 
 
 class FinderAlreadyRegistered(Exception):

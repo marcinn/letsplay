@@ -125,3 +125,8 @@ class Player(object):
 
     def once(self, *args, **kw):
         return self._ev.once(*args, **kw)
+
+    def destroy(self):
+        self.stop()
+        self.clear()
+        self._ev.trigger('destroy')

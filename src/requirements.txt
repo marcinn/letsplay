@@ -1,3 +1,0 @@
-pytaglib
-observable
-mplayer.py

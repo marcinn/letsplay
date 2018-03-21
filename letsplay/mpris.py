@@ -14,7 +14,7 @@ def create_dbus_loop():
     return DBusGMainLoop()
 
 
-def acquire_bus(dbus_loop):
+def acquire_bus(player, dbus_loop):
     try:
         return dbus.service.BusName(
             'org.mpris.MediaPlayer2.letsplay',
@@ -27,22 +27,33 @@ def acquire_bus(dbus_loop):
 def run_loop(loop):
     try:
         loop.run()
-    except KeyboardInterrupt:
-        pass
-    except Exception as e:
-        pass
     finally:
         loop.quit()
 
 
-def main(player):
+def register_mpris_service(player):
     dbus_loop = create_dbus_loop()
-    bus = acquire_bus(dbus_loop)
-    loop = GLib.MainLoop()
-    service = Mpris2Service(player, bus)  # NOQA
+    bus = acquire_bus(player, dbus_loop)
+    return Mpris2Service(player, bus)  # NOQA
+
+
+def create_glib_loop(player):
+    return GLib.MainLoop()
+
+
+def main(player):
+    service = register_mpris_service(player)
+    loop = create_glib_loop(player)
 
     def start_loop_thread():
-        run_loop(loop)
+        print("Start dbus loop thread")
+        try:
+            loop.run()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            loop.quit()
+        print("End dbus loop thread")
 
     t = threading.Thread(target=start_loop_thread)
     t.start()

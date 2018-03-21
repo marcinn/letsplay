@@ -31,6 +31,9 @@ class BaseOutput(object):
     def trigger_file_change(self):
         self._ev.trigger('filechange')
 
+    def destroy(self):
+        pass
+
 
 class MplayerOutput(BaseOutput):
     def __init__(self):
@@ -39,9 +42,12 @@ class MplayerOutput(BaseOutput):
         self._mp = mplayer.Player()
         self._loaded = False
         self._playing = False
+        self._thread_canceller = threading.Event()
 
         def playback_observer():
             while True:
+                if self._thread_canceller.is_set():
+                    return
                 new_loaded = bool(self._mp.stream_length)
                 if not self._loaded == new_loaded:
                     self._loaded = new_loaded
@@ -74,3 +80,7 @@ class MplayerOutput(BaseOutput):
 
     def load(self, path):
         self._mp.loadfile(path)
+
+    def destroy(self):
+        super().destroy()
+        self._thread_canceller.set()
