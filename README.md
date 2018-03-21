@@ -1,5 +1,5 @@
 # letsplay
-An extensible music player written in Python
+An extensible music player wbrary ritten in Python
 
 ## Features
 
