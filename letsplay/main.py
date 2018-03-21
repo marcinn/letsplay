@@ -31,7 +31,7 @@ def run_cli():
     import argparse
     from . import find
 
-    parser = argparse.ArgumentParser('Let`s play - yet another music player')
+    parser = argparse.ArgumentParser()
 
     parser.add_argument(
         'phrase', help='Search query (defaults to glob pattern)')
