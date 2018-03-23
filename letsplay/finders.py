@@ -15,7 +15,7 @@ class GlobFinder(object):
         path = os.path.realpath(os.path.expanduser(phrase))
 
         return map(Song.local, filter(
-            os.path.isfile, glob.iglob('%s*' % path)))
+            os.path.isfile, glob.iglob('%s*' % path, recursive=True)))
 
 
 class FinderAlreadyRegistered(Exception):

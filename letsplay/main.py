@@ -29,12 +29,14 @@ def init():
 
 def run_cli():
     import argparse
-    from . import find
+    from . import find, __version__
 
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         'phrase', help='Search query (defaults to glob pattern)')
+    parser.add_argument(
+        '--version', action='version', version=__version__)
 
     opts = parser.parse_args()
 
@@ -47,5 +49,7 @@ def run_cli():
 
     try:
         loop.run()
+    except KeyboardInterrupt:
+        pass
     finally:
         player.destroy()

@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
+from letsplay import __version__
 
 setup(name='letsplay',
-      version='0.1',
+      version=__version__,
       description='Extensible music player library for Python',
       url='http://github.com/marcinn/letsplay',
       author='Marcin Nowak',
